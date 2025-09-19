@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo CRUD (Native JS)</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 1rem;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #todo-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #todo-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        button {
+            margin-left: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Todo App (Native JS)</h1>
+    <input type="text" id="new-todo" placeholder="Tulis todo..." />
+    <button id="add-btn">Tambah</button>
+    <ul id="todo-list"></ul>
+
+    <script>
+        const API_URL = "http://localhost:11111/todos";
+
+        async function loadTodos() {
+            const res = await fetch(API_URL);
+            const data = await res.json();
+            const list = document.getElementById("todo-list");
+            list.innerHTML = "";
+            data.forEach(todo => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+          <span style="text-decoration:${todo.completed ? 'line-through' : 'none'}">
+            ${todo.title}
+          </span>
+          <span>
+            <button onclick="toggleTodo(${todo.id}, ${!todo.completed})">
+              ${todo.completed ? "Undo" : "Done"}
+            </button>
+            <button onclick="deleteTodo(${todo.id})">Hapus</button>
+          </span>
+        `;
+                list.appendChild(li);
+            });
+        }
+
+        async function addTodo() {
+            const input = document.getElementById("new-todo");
+            if (!input.value) return alert("Tulis dulu todonya!");
+            await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title: input.value })
+            });
+            input.value = "";
+            loadTodos();
+        }
+
+        async function toggleTodo(id, completed) {
+            await fetch(`${API_URL}/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ completed })
+            });
+            loadTodos();
+        }
+
+        async function deleteTodo(id) {
+            await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            loadTodos();
+        }
+
+        document.getElementById("add-btn").addEventListener("click", addTodo);
+        window.onload = loadTodos;
+    </script>
+</body>
+
+</html>

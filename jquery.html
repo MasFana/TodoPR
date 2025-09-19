@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo CRUD (jQuery)</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 1rem;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #todo-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #todo-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        button {
+            margin-left: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Todo App (jQuery)</h1>
+    <input type="text" id="new-todo" placeholder="Tulis todo..." />
+    <button id="add-btn">Tambah</button>
+    <ul id="todo-list"></ul>
+
+    <script>
+        const API_URL = "http://localhost:11111/todos";
+
+        function loadTodos() {
+            $.get(API_URL, function (data) {
+                $("#todo-list").empty();
+                data.forEach(todo => {
+                    $("#todo-list").append(`
+            <li>
+              <span style="text-decoration:${todo.completed ? 'line-through' : 'none'}">
+                ${todo.title}
+              </span>
+              <span>
+                <button onclick="toggleTodo(${todo.id}, ${!todo.completed})">
+                  ${todo.completed ? "Undo" : "Done"}
+                </button>
+                <button onclick="deleteTodo(${todo.id})">Hapus</button>
+              </span>
+            </li>
+          `);
+                });
+            });
+        }
+
+        function addTodo() {
+            const title = $("#new-todo").val();
+            if (!title) return alert("Tulis dulu todonya!");
+            $.post(API_URL, JSON.stringify({ title }), function () {
+                $("#new-todo").val("");
+                loadTodos();
+            }, "json");
+        }
+
+        function toggleTodo(id, completed) {
+            $.ajax({
+                url: `${API_URL}/${id}`,
+                method: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify({ completed }),
+                success: loadTodos
+            });
+        }
+
+        function deleteTodo(id) {
+            $.ajax({ url: `${API_URL}/${id}`, method: "DELETE", success: loadTodos });
+        }
+
+        $("#add-btn").click(addTodo);
+        $(document).ready(loadTodos);
+    </script>
+</body>
+
+</html>
