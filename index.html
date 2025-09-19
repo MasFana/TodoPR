@@ -101,6 +101,7 @@
 <body>
     <h1>📚 Dokumentasi Todo API</h1>
     <p>API CRUD sederhana menggunakan Node.js + Express.</p>
+    <p><small><b>Base URL:</b> <code id="baseUrl">(memuat...)</code></small></p>
 
     <h2>Endpoint</h2>
 
@@ -111,7 +112,7 @@
   "title": "Belajar Node.js"
 }</code></pre>
     <p><b>Contoh Fetch:</b></p>
-    <pre><code>await fetch("http://localhost:11111/todos", {
+    <pre><code>await fetch("__BASE__/todos", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ title: "Belajar Node.js" })
@@ -129,6 +130,10 @@
     <pre><code>[
   { "id": 1695123456789, "title": "Belajar Node.js", "completed": false }
 ]</code></pre>
+    <p><b>Contoh Fetch:</b></p>
+    <pre><code>const todos = await fetch("__BASE__/todos")
+    .then(r => r.json());
+console.log(todos);</code></pre>
 
     <h3>3️⃣ Ambil Todo Berdasarkan ID</h3>
     <span class="endpoint">GET /todos/:id</span>
@@ -138,6 +143,11 @@
   "title": "Belajar Node.js",
   "completed": false
 }</code></pre>
+    <p><b>Contoh Fetch:</b></p>
+    <pre><code>const id = 1695123456789; // ganti dengan ID sebenarnya
+const todo = await fetch(`__BASE__/todos/${id}`)
+    .then(r => r.ok ? r.json() : Promise.reject("Not found"));
+console.log(todo);</code></pre>
 
     <h3>4️⃣ Update Todo</h3>
     <span class="endpoint">PUT /todos/:id</span>
@@ -152,6 +162,14 @@
   "title": "Belajar Express.js",
   "completed": true
 }</code></pre>
+    <p><b>Contoh Fetch:</b></p>
+    <pre><code>const id = 1695123456789; // ganti ID
+const updated = await fetch(`__BASE__/todos/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: "Belajar Express.js", completed: true })
+}).then(r => r.json());
+console.log(updated);</code></pre>
 
     <h3>5️⃣ Hapus Todo</h3>
     <span class="endpoint">DELETE /todos/:id</span>
@@ -161,14 +179,36 @@
   "title": "Belajar Express.js",
   "completed": true
 }</code></pre>
+    <p><b>Contoh Fetch:</b></p>
+    <pre><code>const id = 1695123456789; // ganti ID
+const deleted = await fetch(`__BASE__/todos/${id}`, {
+    method: "DELETE"
+}).then(r => r.json());
+console.log(deleted);</code></pre>
 
     <h3>6️⃣ Hapus Semua Todo</h3>
     <span class="endpoint">DELETE /todos</span>
     <p><b>Response:</b></p>
     <pre><code>{ "message": "All todos deleted" }</code></pre>
+    <p><b>Contoh Fetch:</b></p>
+    <pre><code>await fetch("__BASE__/todos", { method: "DELETE" });
+// -> { message: "All todos deleted" }</code></pre>
 
     <hr>
     <p><i>⚠️ Catatan: Data disimpan di memori dan akan hilang jika server di-restart.</i></p>
 </body>
+
+<script>
+    (function () {
+        const origin = window.location.origin.replace(/\/$/, "");
+        const baseEl = document.getElementById('baseUrl');
+        if (baseEl) baseEl.textContent = origin;
+        document.querySelectorAll('pre code').forEach(block => {
+            if (block.textContent.includes('__BASE__')) {
+                block.textContent = block.textContent.replace(/__BASE__/g, origin);
+            }
+        });
+    })();
+</script>
 
 </html>

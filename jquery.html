@@ -69,10 +69,13 @@
         function addTodo() {
             const title = $("#new-todo").val();
             if (!title) return alert("Tulis dulu todonya!");
-            $.post(API_URL, JSON.stringify({ title }), function () {
-                $("#new-todo").val("");
-                loadTodos();
-            }, "json");
+            $.ajax({
+                url: API_URL,
+                method: "POST",
+                contentType: "application/json", // penting! agar dikirim sebagai JSON
+                data: JSON.stringify({ title: title }),
+                success: loadTodos,
+            });
         }
 
         function toggleTodo(id, completed) {
@@ -81,7 +84,8 @@
                 method: "PUT",
                 contentType: "application/json",
                 data: JSON.stringify({ completed }),
-                success: loadTodos
+                success: loadTodos,
+
             });
         }
 
