@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+    <title>Dokumentasi Todo API</title>
+    <style>
+        :root {
+            --bg: #121417;
+            --bg-alt: #1b1f24;
+            --text: #e2e6eb;
+            --text-dim: #a0a8b4;
+            --code-bg: #1f2429;
+            --border: #2c3238;
+            --accent: #4f9dff;
+            --accent-bg: #153455;
+            --endpoint-bg: #233041;
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            max-width: 880px;
+            margin: auto;
+            padding: 1.75rem clamp(1rem, 2vw, 2rem);
+            line-height: 1.55;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.25;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 3.5vw, 2.6rem);
+            margin-bottom: .5rem;
+        }
+
+        p {
+            color: var(--text-dim);
+        }
+
+        code,
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 0;
+            border-radius: var(--radius);
+            display: block;
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: .85rem;
+            color: var(--text);
+        }
+
+        pre>code {
+            background: transparent;
+            border: 0;
+            padding: 10px 14px;
+        }
+
+        .endpoint {
+            background: var(--endpoint-bg);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: var(--radius);
+            display: inline-block;
+            font-size: .7rem;
+            letter-spacing: .5px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0 1.2rem;
+        }
+
+        i {
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>📚 Dokumentasi Todo API</h1>
+    <p>API CRUD sederhana menggunakan Node.js + Express.</p>
+
+    <h2>Endpoint</h2>
+
+    <h3>1️⃣ Tambah Todo</h3>
+    <span class="endpoint">POST /todos</span>
+    <p><b>Request:</b></p>
+    <pre><code>{
+  "title": "Belajar Node.js"
+}</code></pre>
+    <p><b>Contoh Fetch:</b></p>
+    <pre><code>await fetch("http://localhost:11111/todos", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ title: "Belajar Node.js" })
+});</code></pre>
+    <p><b>Response:</b></p>
+    <pre><code>{
+  "id": 1695123456789,
+  "title": "Belajar Node.js",
+  "completed": false
+}</code></pre>
+
+    <h3>2️⃣ Ambil Semua Todo</h3>
+    <span class="endpoint">GET /todos</span>
+    <p><b>Response:</b></p>
+    <pre><code>[
+  { "id": 1695123456789, "title": "Belajar Node.js", "completed": false }
+]</code></pre>
+
+    <h3>3️⃣ Ambil Todo Berdasarkan ID</h3>
+    <span class="endpoint">GET /todos/:id</span>
+    <p><b>Response:</b></p>
+    <pre><code>{
+  "id": 1695123456789,
+  "title": "Belajar Node.js",
+  "completed": false
+}</code></pre>
+
+    <h3>4️⃣ Update Todo</h3>
+    <span class="endpoint">PUT /todos/:id</span>
+    <p><b>Request:</b></p>
+    <pre><code>{
+  "title": "Belajar Express.js",
+  "completed": true
+}</code></pre>
+    <p><b>Response:</b></p>
+    <pre><code>{
+  "id": 1695123456789,
+  "title": "Belajar Express.js",
+  "completed": true
+}</code></pre>
+
+    <h3>5️⃣ Hapus Todo</h3>
+    <span class="endpoint">DELETE /todos/:id</span>
+    <p><b>Response:</b></p>
+    <pre><code>{
+  "id": 1695123456789,
+  "title": "Belajar Express.js",
+  "completed": true
+}</code></pre>
+
+    <h3>6️⃣ Hapus Semua Todo</h3>
+    <span class="endpoint">DELETE /todos</span>
+    <p><b>Response:</b></p>
+    <pre><code>{ "message": "All todos deleted" }</code></pre>
+
+    <hr>
+    <p><i>⚠️ Catatan: Data disimpan di memori dan akan hilang jika server di-restart.</i></p>
+</body>
+
+</html>

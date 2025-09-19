@@ -1,23 +1,36 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import cors from "cors";
+
+// Recreate __dirname in ES Module context
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 11111;
 
 app.use(express.json());
-app.use(cors({ origin: '*' }));
-// In-memory database untuk todos
+app.use(cors({ origin: "*" }));
+
+// In-memory database for todos (volatile)
 let todos = [];
 
-// Middleware untuk reset array jika sudah 3000
+// Middleware to reset array if it reaches limit (prevent uncontrolled memory use)
 function checkLimit(req, res, next) {
     if (todos.length >= 5000) {
         console.log("⚠️ Jumlah todo sudah 5000, reset semua data...");
         todos = [];
     }
+    console.log(`Jumlah todo saat ini: ${todos.length}`);
     next();
 }
 
+// Register once
 app.use(checkLimit);
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
 
 // CREATE todo
 app.post("/todos", (req, res) => {
