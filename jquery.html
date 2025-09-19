@@ -4,46 +4,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo CRUD (jQuery)</title>
+    <title>Todo App (jQuery)</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            font-family: sans-serif;
-            max-width: 600px;
-            margin: auto;
-            padding: 1rem;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        #todo-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        #todo-list li {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        button {
-            margin-left: 6px;
-        }
-    </style>
 </head>
 
 <body>
-    <h1>Todo App (jQuery)</h1>
+    <h1>Todo App – jQuery</h1>
     <input type="text" id="new-todo" placeholder="Tulis todo..." />
     <button id="add-btn">Tambah</button>
+
     <ul id="todo-list"></ul>
 
     <script>
-        const API_URL = "http://localhost:11111/todos";
+        const API_URL = "https://todopweb.fana.my.id/todos";
 
         function loadTodos() {
             $.get(API_URL, function (data) {
@@ -54,12 +27,10 @@
               <span style="text-decoration:${todo.completed ? 'line-through' : 'none'}">
                 ${todo.title}
               </span>
-              <span>
-                <button onclick="toggleTodo(${todo.id}, ${!todo.completed})">
-                  ${todo.completed ? "Undo" : "Done"}
-                </button>
-                <button onclick="deleteTodo(${todo.id})">Hapus</button>
-              </span>
+              <button onclick="toggleTodo(${todo.id}, ${!todo.completed})">
+                ${todo.completed ? "Undo" : "Done"}
+              </button>
+              <button onclick="deleteTodo(${todo.id})">Hapus</button>
             </li>
           `);
                 });
@@ -68,13 +39,16 @@
 
         function addTodo() {
             const title = $("#new-todo").val();
-            if (!title) return alert("Tulis dulu todonya!");
+            if (!title) return alert("Tulis dulu todo!");
             $.ajax({
                 url: API_URL,
                 method: "POST",
-                contentType: "application/json", // penting! agar dikirim sebagai JSON
-                data: JSON.stringify({ title: title }),
-                success: loadTodos,
+                contentType: "application/json",
+                data: JSON.stringify({ title }),
+                success: () => {
+                    $("#new-todo").val("");
+                    loadTodos();
+                }
             });
         }
 
@@ -84,8 +58,7 @@
                 method: "PUT",
                 contentType: "application/json",
                 data: JSON.stringify({ completed }),
-                success: loadTodos,
-
+                success: loadTodos
             });
         }
 

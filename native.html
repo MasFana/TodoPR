@@ -4,45 +4,18 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo CRUD (Native JS)</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            max-width: 600px;
-            margin: auto;
-            padding: 1rem;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        #todo-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        #todo-list li {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        button {
-            margin-left: 6px;
-        }
-    </style>
+    <title>Todo App (Fetch API)</title>
 </head>
 
 <body>
-    <h1>Todo App (Native JS)</h1>
+    <h1>Todo App – Fetch</h1>
     <input type="text" id="new-todo" placeholder="Tulis todo..." />
     <button id="add-btn">Tambah</button>
+
     <ul id="todo-list"></ul>
 
     <script>
-        const API_URL = "http://localhost:11111/todos";
+        const API_URL = "https://todopweb.fana.my.id/todos";
 
         async function loadTodos() {
             const res = await fetch(API_URL);
@@ -55,12 +28,10 @@
           <span style="text-decoration:${todo.completed ? 'line-through' : 'none'}">
             ${todo.title}
           </span>
-          <span>
-            <button onclick="toggleTodo(${todo.id}, ${!todo.completed})">
-              ${todo.completed ? "Undo" : "Done"}
-            </button>
-            <button onclick="deleteTodo(${todo.id})">Hapus</button>
-          </span>
+          <button onclick="toggleTodo(${todo.id}, ${!todo.completed})">
+            ${todo.completed ? "Undo" : "Done"}
+          </button>
+          <button onclick="deleteTodo(${todo.id})">Hapus</button>
         `;
                 list.appendChild(li);
             });
@@ -68,7 +39,7 @@
 
         async function addTodo() {
             const input = document.getElementById("new-todo");
-            if (!input.value) return alert("Tulis dulu todonya!");
+            if (!input.value) return alert("Tulis dulu todo!");
             await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
