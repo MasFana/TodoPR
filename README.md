@@ -1,12 +1,12 @@
 # Todo API – Dokumentasi & Panduan
 
-## 📖 Deskripsi
+## Deskripsi
 Todo API ini adalah implementasi CRUD sederhana menggunakan **Node.js + Express**, menyimpan data **di memori (in-memory)**.  
 API ini cocok untuk belajar membuat REST API dan menghubungkannya dengan frontend menggunakan `fetch`.
 
 ---
 
-## 🚀 Instalasi & Menjalankan Server
+## Instalasi & Menjalankan Server
 
 ### 1️⃣ Clone & Install
 ```bash
@@ -29,7 +29,7 @@ http://localhost:11111
 
 ---
 
-## 📚 Dokumentasi Endpoint
+## Dokumentasi Endpoint
 
 ### 1. Tambah Todo
 
@@ -210,7 +210,7 @@ await fetch("http://localhost:11111/todos", {
 
 ---
 
-## 🧪 Catatan
+## Catatan
 
 * Data **tidak persisten**, server restart akan menghapus semua todo.
 * Setelah 5000 todo, semua data otomatis dihapus.
