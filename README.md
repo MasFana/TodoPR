@@ -1,4 +1,4 @@
-# Todo API | Dokumentasi & Panduan
+# Todo API - Dokumentasi & Panduan
 
 ## Deskripsi
 Todo API ini adalah implementasi CRUD sederhana menggunakan **Node.js + Express**, menyimpan data **di memori (in-memory)**.  
